@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Data binđing & Javascript Expression</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.10/dist/vue.js"></script>
+</head>
+
+<body>
+    <div id="app">
+        <!-- thuộc tính chỉ thị trong VueJS (data binding) ràng buộc dữ liệu-->
+        <a v-bind:href="url" v-bind:target="target">{{title}}</a>
+        <i>{{formatPrice()}}</i>
+        {{check ? "ve ben trai" : "ve ben phai"}}
+    </div>
+    <script src="main.js"></script>
+</body>
+
+</html>
