@@ -15,6 +15,16 @@
             width: 200px;
             height: 200px;
             background-color: aqua;
+            position: relative;
+        }
+
+        .box-2 {
+            width: 50px;
+            height: 50px;
+            position: absolute;
+            right: 0;
+            top: 0;
+            background-color: red;
         }
     </style>
     <div id="app">
@@ -23,6 +33,9 @@
         <button v-on:click="count += 2">Click me 2</button>
         <div class="box" v-on:mousemove="handelMouseMove">
             <p>{{clientX}} : {{clientY}}</p>
+            <div class="box-2" v-on:mousemove.stop="handleMouseMoveChild">
+
+            </div>
         </div>
         <!-- event modifier của vue js sử lý các sự kiện mặc định của element -->
         <form action="/server.php" v-on:submit.prevent="handleSubmit">

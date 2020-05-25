@@ -18,6 +18,15 @@ var vueInstance = new Vue({
         handleSubmit(e)
         {
             console.log(e);
+            // Ngăn chặn sự kiện mặc định của phần tử
+            // e.preventDefault();
+        },
+        handleMouseMoveChild(e)
+        {
+            //ngăn chặn lan tỏa sự kiện của phần tử con ra phần tử cha
+            // e.stopPropagation();
+            
+            console.log(e.target);
         },
     },
 })

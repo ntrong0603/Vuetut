@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.10/dist/vue.js"></script>
+</head>
+
+<body>
+    <div id="app">
+        <p>{{ message }}</p>
+        <p>{{ reverseMessage }}</p>
+        <hr>
+        <button v-on:click="a++">A = A + 1</button>
+        <button v-on:click="b++">D = D + 1</button>
+        <p>Number + A = {{ addA }}</p>
+        <p>Number + B = {{ addB }}</p>
+    </div>
+    <script>
+        var app = new Vue({
+            el: "#app",
+            data: {
+                message: "Hello world",
+                a: 0,
+                b: 0,
+                number: 20,
+            },
+            methods: {
+                //method chạy không mong muốn nếu tương tác với dữ liệu
+            },
+            computed: {
+                reverseMessage: function ()
+                {
+                    return this.message.split('').reverse().join('');
+                },
+                addA()
+                {
+                    console.log("Add A Run");
+                    return this.a + this.number;
+                },
+                addB()
+                {
+                    console.log("Add B Run");
+                    return this.b + this.number;
+                },
+            },
+        })
+    </script>
+</body>
+
+</html>
