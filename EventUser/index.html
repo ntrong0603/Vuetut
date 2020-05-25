@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.10/dist/vue.js"></script>
+</head>
+
+<body>
+    <style>
+        .box {
+            display: block;
+            width: 200px;
+            height: 200px;
+            background-color: aqua;
+        }
+    </style>
+    <div id="app">
+        <h1>{{count}}</h1>
+        <button v-on:click="handelClick($event, 5)">Click me</button>
+        <button v-on:click="count += 2">Click me 2</button>
+        <div class="box" v-on:mousemove="handelMouseMove">
+            <p>{{clientX}} : {{clientY}}</p>
+        </div>
+        <!-- event modifier của vue js sử lý các sự kiện mặc định của element -->
+        <form action="/server.php" v-on:submit.prevent="handleSubmit">
+            <label for="">Nhập first name</label>
+            <input type="text" name="username" id="">
+            <label for="">Nhập email</label>
+            <input type="email" name="email" id="">
+            <button type="submit">Đăng nhập</button>
+        </form>
+    </div>
+    <script src="main.js"></script>
+</body>
+
+</html>
