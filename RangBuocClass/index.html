@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.10/dist/vue.js"></script>
+    <style>
+        .active {
+            width: 50px;
+            height: 50px;
+            background-color: red;
+        }
+
+        .test1 {
+            background-color: blue;
+        }
+
+        .test2 {
+            background-color: yellow;
+        }
+    </style>
+</head>
+
+<body>
+    <!--v-model-->
+    <div id="app">
+        <h1>FirstName = {{firstName}}</h1>
+        <p>{{about}}</p>
+        <input type="text" v-model="firstName" name="firstName" id="firstName" placeholder="Nhập first name">
+        <textarea name="about" id="about" v-model="about" cols="30" rows="10"></textarea>
+        <button v-on:click="handleChangeActive">Active</button>
+        <button v-on:click="handleChangError">Error</button>
+        <div class="test99" v-bind:class="objClass2"></div>
+        <hr>
+        <div v-bind:style="styleObject">Text binding style</div>
+        <hr>
+        <div>
+            <button v-on:click="changTabs('login')">Login</button>
+            <button v-on:click="changTabs('register')">Register</button>
+            <form v-show="tabSelect === 'login'" action="">
+                <label for="">User</label>
+                <input type="text" name="" id="">
+                <label for="">Password</label>
+                <input type="text" name="" id="">
+                <button>Login</button>
+            </form>
+            <form v-show="tabSelect === 'register'" action="">
+                <label for="">User</label>
+                <input type="text" name="" id="">
+                <label for="">Password</label>
+                <input type="text" name="" id="">
+                <label for="">Password confirm</label>
+                <input type="text" name="" id="">
+                <button>Register</button>
+            </form>
+        </div>
+    </div>
+    <script>
+        var app = new Vue({
+            el: "#app",
+            data: {
+                firstName: '',
+                about: '',
+                textClass: 'active',
+                tabSelect: 'login',
+                objClass: {
+                    'active': true,
+                    'test1': false,
+                    'test2': true,
+                },
+                styleObject: {
+                    color: 'red',
+                    fontSize: '13px'
+                },
+                styleObject2: {
+                    color: 'yellow',
+                    fontSize: '20px'
+                },
+            },
+            methods: {
+                handleChangeActive()
+                {
+                    this.objClass.test1 = true;
+                    this.objClass.test2 = false;
+                },
+                handleChangError()
+                {
+                    this.objClass.test1 = false;
+                    this.objClass.test2 = true;
+                },
+                changTabs(tab)
+                {
+                    this.tabSelect = tab;
+                }
+            },
+            computed: {
+                objClass2: function ()
+                {
+                    return {
+                        'active': this.objClass.active,
+                        'test1': this.objClass.test1,
+                        'test2': this.objClass.test2,
+                    };
+                },
+            },
+        })
+    </script>
+</body>
+
+</html>
