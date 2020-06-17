@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.10/dist/vue.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            text-decoration: none;
+            list-style: none;
+        }
+
+        body {
+            font-size: 14px;
+            padding: 15px;
+        }
+
+        a,
+        button {
+            cursor: pointer;
+        }
+
+        .product {
+            margin: 15px;
+            display: flex;
+            align-items: flex-start;
+            max-width: 400px;
+            border: 1px solid #cccccc;
+            border-radius: 5px;
+            padding: 15px;
+            box-sizing: border-box;
+            font-size: 14px;
+        }
+
+        .product .product-image,
+        .product .product-content {
+            width: 50%;
+        }
+
+        .product .product-image {
+            padding: 15px;
+        }
+
+        .product .product-image img {
+            width: 100%;
+            height: auto;
+        }
+
+        .product .product-content h1 {
+            font-size: 1.5rem;
+            color: blue;
+        }
+
+        .product-price {
+            color: orange;
+            font-size: 1.3rem;
+        }
+
+        .product-sale-price {
+            color: #cccccc;
+            opacity: .8;
+            font-size: .8rem;
+            margin: 5px 0;
+        }
+
+        .product-sale-price span {
+            color: black;
+            border: 1px solid #cccccc;
+            border-radius: 5px;
+            padding: 2px 5px;
+            margin-left: 5px;
+        }
+
+        .btn-add-cart {
+            background-color: orange;
+            color: white;
+            padding: 5px 30px;
+            font-size: 1.2rem;
+            border: none;
+            border-radius: 3px;
+        }
+
+        .cart {
+            border: 1px solid #ccc;
+            max-width: 100px;
+            text-align: center;
+            padding: 3px 0;
+            border-radius: 3px;
+            font-size: 1.1rem;
+        }
+
+        .product-variations img {
+            max-width: 50px;
+        }
+
+        .product-variations a {
+            display: inline-block;
+            vertical-align: middle;
+        }
+
+        .product-variations a.active {
+            border: 1px solid orange;
+        }
+    </style>
+</head>
+
+<body>
+    <!--v-model-->
+    <div id="app">
+        <div class="cart">cart {{cartNumber}}</div>
+        <div class="product">
+            <div class="product-image">
+                <img v-bind:src="getProduct.image" v-bind:alt="title" srcset="">
+            </div>
+            <div class="product-content">
+                <h1>{{title}}</h1>
+                <div class="product-brand">Thương hiệu: {{brand}}</div>
+
+                <div class="product-quantity" v-if="getProduct.quantity > 0">Còn lại: {{getProduct.quantity}}</div>
+                <div class="product-quantity" v-if="getProduct.quantity <= 0">Sản phẩm đã hết hàng</div>
+
+                <div class="product-price">{{formatPrice}}</div>
+                <div class="product-sale-price">{{formatOriginalPrice}}<span>-{{salePrice * 100}}%</span></div>
+                <div class="product-variations">
+                    <div>Màu sắc: {{getProduct.textColor}}</div>
+                    <div>
+                        <a v-for="(item, index) in listProductDetail" v-on:click="handleClickColor($event, index)"
+                            v-bind:class="classActive(index)" v-bind:key="index">
+                            <img v-bind:src="item.image" v-bind:alt="item.textColor" srcset="">
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <button class="btn-add-cart" v-on:click="handleAddToCart" type="button">Add to cart</button>
+        <div v-html="getProduct.description">
+        </div>
+    </div>
+    <script>
+        var app = new Vue({
+            el: "#app",
+            data: {
+                title: "Áo thun cùi +1",
+                originPrice: "20000",
+                salePrice: .3,
+                brand: "Trong us",
+                selectedProduct: 0,
+                listProductDetail: [{
+                    image: "https://maydongphucglu.com/wp-content/uploads/2018/02/Mau-Ao-Thun-Nam-Co-Tru-Tay-Ngan-05.png",
+                    textColor: 'Màu trắng',
+                    quantity: 10,
+                    description: `<h1>Vải thun giá rẻ</h1>
+                                <h2>Điểm phân phối vải thun giá rẻ nhất</h2>
+                                <h2>phân phối vải thun giá rẻ chất lượng nhất</h2>
+                                <h2>Đảm bảo 100% phân phối vải thun giá rẻ</h2>
+                                <h2>Làm đúng phương châm phân phối vải thun giá rẻ</h2>
+                                <h2>C.Ty cổ phần Vải Việt Nam chuyên phân phối vải thun giá rẻ</h2>
+                                <h3>Tại sao chọn C.Ty cổ phần Vải Việt Nam làm nhà phân phối vải thun giá rẻ</h3>
+                                <h4>phân phối vải thun giá rẻ liệu bạn có nghi ngờ</h4>
+                                <h5>Được và mất khi C.Ty cổ phần Vải Việt Nam phân phối vải thun giá rẻ cho bạn</h5>
+                                <h6>Còn gì bằng khi được phối vải thun giá rẻ cho bạn</h6>`
+                }, {
+                    image: "https://vn-test-11.slatic.net/original/39ee283388edb982686f73ecee24a389.jpg_720x720q80.jpg_.webp",
+                    textColor: 'Màu đen',
+                    quantity: 8,
+                    description: `<h1>Vải thun giá rẻ 333</h1>
+                                <h2>Điểm phân phối vải thun giá rẻ nhất</h2>
+                                <h2>phân phối vải thun giá rẻ chất lượng nhất</h2>
+                                <h2>Đảm bảo 100% phân phối vải thun giá rẻ</h2>
+                                <h2>Làm đúng phương châm phân phối vải thun giá rẻ</h2>
+                                <h2>C.Ty cổ phần Vải Việt Nam chuyên phân phối vải thun giá rẻ</h2>
+                                <h3>Tại sao chọn C.Ty cổ phần Vải Việt Nam làm nhà phân phối vải thun giá rẻ</h3>
+                                <h4>phân phối vải thun giá rẻ liệu bạn có nghi ngờ</h4>
+                                <h5>Được và mất khi C.Ty cổ phần Vải Việt Nam phân phối vải thun giá rẻ cho bạn</h5>
+                                <h6>Còn gì bằng khi được phối vải thun giá rẻ cho bạn</h6>`
+                }, {
+                    image: "https://cardino.vn/wp-content/uploads/Ao-Thun-Nam-Acn-09-12.jpg",
+                    textColor: 'Màu đỏ',
+                    quantity: 0,
+                    description: `<h1>Vải thun giá rẻ 4444</h1>
+                                <h2>Điểm phân phối vải thun giá rẻ nhất</h2>
+                                <h2>phân phối vải thun giá rẻ chất lượng nhất</h2>
+                                <h2>Đảm bảo 100% phân phối vải thun giá rẻ</h2>
+                                <h2>Làm đúng phương châm phân phối vải thun giá rẻ</h2>
+                                <h2>C.Ty cổ phần Vải Việt Nam chuyên phân phối vải thun giá rẻ</h2>
+                                <h3>Tại sao chọn C.Ty cổ phần Vải Việt Nam làm nhà phân phối vải thun giá rẻ</h3>
+                                <h4>phân phối vải thun giá rẻ liệu bạn có nghi ngờ</h4>
+                                <h5>Được và mất khi C.Ty cổ phần Vải Việt Nam phân phối vải thun giá rẻ cho bạn</h5>
+                                <h6>Còn gì bằng khi được phối vải thun giá rẻ cho bạn</h6>`
+                }],
+                cartNumber: 0,
+            },
+            methods: {
+                handleClickColor(e, index)
+                {
+                    this.selectedProduct = index;
+                    // console.log(e.target);
+                },
+                classActive(index)
+                {
+                    return {
+                        active: this.selectedProduct == index,
+                    }
+                },
+                handleAddToCart(e){
+                    if(this.cartNumber + 1 > this.getProduct.quantity){
+                        alert("Số lượng không đủ");
+                    }else{
+                        this.cartNumber += 1;
+                    }
+                }
+            },
+            computed: {
+                formatOriginalPrice()
+                {
+                    let number = this.originPrice;
+                    return new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'VND' }).format(number);
+                },
+                formatPrice()
+                {
+                    let number = this.originPrice;
+                    let sale = this.salePrice;
+                    let price = number - number * sale;
+                    return new Intl.NumberFormat('de-DE', { style: 'currency', currency: 'VND' }).format(price);
+                },
+                getProduct()
+                {
+                    let index = this.selectedProduct;
+                    return this.listProductDetail[index];
+                },
+
+            },
+        })
+    </script>
+</body>
+
+</html>
